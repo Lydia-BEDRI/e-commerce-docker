@@ -10,6 +10,7 @@ e-commerce-vue/
 ├── package.json
 ├── README.md
 ├── scripts/
+│   ├── init-products.sh
 └── services/
     ├── auth-service/
     │   ├── Dockerfile
@@ -32,32 +33,11 @@ e-commerce-vue/
 - **Order Service** : Gestion des commandes.
 - **MongoDB** : Base de données utilisée par tous les services backend.
 
-## **Conteneurisation avec Docker**
+## **Déploiement avec Docker et Docker Compose**
 
-### **Configuration des Dockerfiles**
+Le projet est conteneurisé avec Docker et orchestré avec Docker Compose.
 
-Chaque service dispose d’un `Dockerfile` permettant de créer son image Docker.
-
-1. **Frontend (Vue.js)**
-   - Utilise une image Node.js comme base.
-   - Définit le répertoire de travail `/app`.
-   - Copie les fichiers du projet.
-   - Installe les dépendances avec `npm install`.
-   - Effectue la construction avec `npm run build`.
-   - Expose le port `8080`.
-   - Définit la commande de démarrage avec `npm start`.
-
-2. **Microservices Backend (Auth, Product, Order Services)**
-   - Utilisent une image Node.js comme base.
-   - Définissent le répertoire de travail `/app`.
-   - Copient les fichiers du projet.
-   - Installent les dépendances avec `npm install`.
-   - Exposent leurs ports respectifs (`3001`, `3000`, `3002`).
-   - Définissent la commande de démarrage avec `npm start`.
-
-### **Orchestration avec Docker Compose**
-
-Le projet est orchestré avec `docker-compose.yml` pour lancer tous les services en parallèle.
+### **Docker Compose - Configuration**
 
 1. **Création du réseau `backend`** : Permet aux conteneurs de communiquer sans exposer MongoDB à l'extérieur.  
 
@@ -81,6 +61,9 @@ Le projet est orchestré avec `docker-compose.yml` pour lancer tous les services
    - Le frontend appelle les API (`auth-service`, `product-service`, `order-service`).  
    - Les microservices interagissent avec MongoDB pour gérer les utilisateurs, les produits et les commandes.
 
+6. **Exécution du script d'initialisation des produits** :  
+   - Après le lancement des services, le script `scripts/init-products.sh` est exécuté pour insérer des produits de test dans la base de données.
+
 ## **Lancement du Projet**
 
 1. **Cloner le dépôt** :
@@ -92,7 +75,11 @@ Le projet est orchestré avec `docker-compose.yml` pour lancer tous les services
    ```bash
    docker-compose up --build
    ```
-3. **Accéder à l'application** :
+3. **Initialiser les produits dans la base de données** :
+   ```bash
+   bash scripts/init-products.sh
+   ```
+4. **Accéder à l'application** :
    - Frontend : http://localhost:8080
    - Auth Service : http://localhost:3001
    - Product Service : http://localhost:3000
