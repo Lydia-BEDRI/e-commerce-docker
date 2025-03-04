@@ -32,11 +32,32 @@ e-commerce-vue/
 - **Order Service** : Gestion des commandes.
 - **MongoDB** : Base de données utilisée par tous les services backend.
 
-## **Déploiement avec Docker et Docker Compose**
+## **Conteneurisation avec Docker**
 
-Le projet est conteneurisé avec Docker et orchestré avec Docker Compose.
+### **Configuration des Dockerfiles**
 
-### **Docker Compose - Configuration**
+Chaque service dispose d’un `Dockerfile` permettant de créer son image Docker.
+
+1. **Frontend (Vue.js)**
+   - Utilise une image Node.js comme base.
+   - Définit le répertoire de travail `/app`.
+   - Copie les fichiers du projet.
+   - Installe les dépendances avec `npm install`.
+   - Effectue la construction avec `npm run build`.
+   - Expose le port `8080`.
+   - Définit la commande de démarrage avec `npm start`.
+
+2. **Microservices Backend (Auth, Product, Order Services)**
+   - Utilisent une image Node.js comme base.
+   - Définissent le répertoire de travail `/app`.
+   - Copient les fichiers du projet.
+   - Installent les dépendances avec `npm install`.
+   - Exposent leurs ports respectifs (`3001`, `3000`, `3002`).
+   - Définissent la commande de démarrage avec `npm start`.
+
+### **Orchestration avec Docker Compose**
+
+Le projet est orchestré avec `docker-compose.yml` pour lancer tous les services en parallèle.
 
 1. **Création du réseau `backend`** : Permet aux conteneurs de communiquer sans exposer MongoDB à l'extérieur.  
 
